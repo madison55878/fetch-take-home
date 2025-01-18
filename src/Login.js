@@ -1,14 +1,35 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
   
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
       event.preventDefault();
-      // Handle login logic here
-      console.log('Email:', email);
-      console.log('Name:', name);
+      try {
+        const response = await fetch('https://frontend-take-home-service.fetch.com/auth/login', { 
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email })
+        });
+  
+        if (response.ok) {
+            navigate('/'); 
+          } else {
+            console.error('Login failed.');
+          }
+        } catch (error) {
+          console.error('An error occurred during login:', error);
+          setError('Login failed.')
+        }
     };
   
     return (
@@ -32,6 +53,7 @@ const Login = () => {
           />
         </div>
         <button type="submit">Login</button>
+        <p>{error}</p>
       </form>
     );
 };
