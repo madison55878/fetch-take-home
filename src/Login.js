@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from './assets/fetch-logo.gif'
 
 
 const Login = () => {
@@ -22,7 +23,7 @@ const Login = () => {
         });
   
         if (response.ok) {
-            navigate('/'); 
+            navigate('/search'); 
           } else {
             console.error('Login failed.');
           }
@@ -33,10 +34,12 @@ const Login = () => {
     };
   
     return (
+    <div id="loginDiv">
+    <img id="fetchLogo" src={logo} alt="Logo" />
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name:</label>
           <input
+            placeholder="Name"
             type="name"
             id="name"
             value={name}
@@ -44,8 +47,8 @@ const Login = () => {
           />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
           <input
+            placeholder="Email"
             type="email"
             id="email"
             value={email}
@@ -55,6 +58,7 @@ const Login = () => {
         <button type="submit">Login</button>
         <p>{error}</p>
       </form>
+    </div>  
     );
 };
 
