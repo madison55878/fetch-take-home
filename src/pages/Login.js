@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from './assets/fetch-logo.gif'
+import logo from '../assets/fetch-logo.gif'
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
 
 
 const Login = () => {
@@ -8,7 +11,6 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-
   
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -24,40 +26,33 @@ const Login = () => {
   
         if (response.ok) {
             navigate('/search'); 
-          } else {
-            console.error('Login failed.');
-          }
+        } else {
+          setError('Login failed.')
+        }
         } catch (error) {
-          console.error('An error occurred during login:', error);
           setError('Login failed.')
         }
     };
   
     return (
     <div id="loginDiv">
-    <img id="fetchLogo" src={logo} alt="Logo" />
+      <img id="fetchLogo" src={logo} alt="Logo" />
       <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            placeholder="Name"
-            type="name"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            placeholder="Email"
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-        <p>{error}</p>
+        <FormControl sx={{ width: '35%'}}>
+          <TextField id="outlined-basic" label="Name"
+              type="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)} variant="outlined" />
+          <TextField id="outlined-basic" label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} variant="outlined" />
+          <Button type="submit" variant="contained">
+            Login
+          </Button>         
+        </FormControl>
       </form>
+      <p>{error}</p>
     </div>  
     );
 };

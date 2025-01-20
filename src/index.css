@@ -14,6 +14,7 @@ code {
 
 #loginDiv {
   text-align: center;
+  display: block;
 }
 
 #fetchLogo {
@@ -21,18 +22,55 @@ code {
   width: 250px;
 }
 
-input {
-  margin: 10px 0;
-  width: 25%;
+.formInput, #matchButton {
+  margin: 5px 0;
   padding: 5px;
 }
 
-.multiSelectContainer {
-  /* position: relative; */
+#searchFormDiv, .pagination, #matchModal {
   text-align: center;
-  width: 50%;
 }
 
-#searchForm {
+.pagination a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.dogDiv {
+  display: inline-block;
+  width: 25%;
+  background-color: #ffcea1;
+  border: 2px solid black; 
+  padding: 20px; 
+  margin: 15px;
+  border-radius: 10px;
+
+}
+
+.dogImg {
+  height: 250px;
+  max-width: 90%;
+}
+
+#dogsWrapper {
   text-align: center;
+}
+
+#logoutLink {
+  float: right;
+  padding: 15px;
+  cursor: pointer;
+  color: #1976d2;
 }
