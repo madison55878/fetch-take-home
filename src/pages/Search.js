@@ -56,19 +56,21 @@ const Search = () => {
       alert('You cannot choose a max age lower than a min age.')
     } 
     else {
-      const params = new URLSearchParams({
-        formData
-      });
-      console.log(params.toString())
+      const params = new URLSearchParams(formData).toString();
+      console.log(params)
       try {
-        const response = await fetch('https://frontend-take-home-service.fetch.com/dogs/search', {
+        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${params}`, {
             credentials: 'include'
         });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const jsonData = await response.json();
-        fetchDogs(jsonData.resultIds);
+        if(jsonData.resultIds.length === 0) {
+          alert('No results found :(')
+        } else {
+          fetchDogs(jsonData.resultIds);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
