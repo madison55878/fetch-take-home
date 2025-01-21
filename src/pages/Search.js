@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
@@ -9,7 +10,6 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Dogs from '../components/Dogs';
 import logo from '../assets/fetch-logo.gif'
-import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
   const [data, setData] = useState([]);
@@ -52,22 +52,28 @@ const Search = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const params = new URLSearchParams({
-      formData
-    });
-    console.log(params.toString())
-    try {
-      const response = await fetch('https://frontend-take-home-service.fetch.com/dogs/search', {
-          credentials: 'include'
+    if(formData.ageMax < formData.ageMin) {
+      alert('You cannot choose a max age lower than a min age.')
+    } 
+    else {
+      const params = new URLSearchParams({
+        formData
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      console.log(params.toString())
+      try {
+        const response = await fetch('https://frontend-take-home-service.fetch.com/dogs/search', {
+            credentials: 'include'
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const jsonData = await response.json();
+        fetchDogs(jsonData.resultIds);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-      const jsonData = await response.json();
-      fetchDogs(jsonData.resultIds);
-    } catch (error) {
-      console.error('Error fetching data:', error);
     }
+    
   }
 
   const fetchDogs = async (ids) => {
@@ -90,24 +96,24 @@ const Search = () => {
       } catch (error) {
         console.error('An error occurred during login:', error);
       }
-    }
+  }
 
-    const handleLogout = async () => {
-      try {
-        const response = await fetch('https://frontend-take-home-service.fetch.com/auth/logout', { 
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        if (response.ok) {
-            navigate('/login'); 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('https://frontend-take-home-service.fetch.com/auth/logout', { 
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
         }
-        } catch (error) {
-          console.log(error)
-        }
-    }
+      });
+      if (response.ok) {
+          navigate('/login'); 
+      }
+      } catch (error) {
+        console.log(error)
+      }
+  }
 
   return (
     <><a id="logoutLink" onClick={handleLogout}>LOGOUT</a>

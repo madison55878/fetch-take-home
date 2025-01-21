@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -15,6 +15,8 @@ const Dogs = (props) => {
   const [open, setOpen] = React.useState(false);
   const [match, setMatch] = React.useState({});
   const handleClose = () => setOpen(false);
+  const [isBreedAsc, setIsBreedAsc] = useState(false);
+  const [isLocAsc, setIsLocAsc] = useState(false);
 
   const modalStyle = {
     position: 'absolute',
@@ -38,6 +40,28 @@ const Dogs = (props) => {
     } else {
       setFavorites(favorites.filter(favDog => favDog !== dog));
     }
+  };
+
+  const toggleBreedAsc = () => {
+    if(!isBreedAsc) {
+      currentDogs.sort((a, b) => a.breed - b.breed)
+      setIsBreedAsc(true)
+    } else {
+      currentDogs.sort((a, b) => b.breed - a.breed)
+      setIsBreedAsc(false)
+    }
+    ;
+  };
+
+  const toggleLocAsc = () => {
+    if(!isLocAsc) {
+      currentDogs.sort((a, b) => a.breed - b.breed)
+      setIsLocAsc(true)
+    } else {
+      currentDogs.sort((a, b) => b.breed - a.breed)
+      setIsLocAsc(false)
+    }
+    ;
   };
 
   const findMatch = async () => {
@@ -74,6 +98,12 @@ const Dogs = (props) => {
 
     return (
       <div id="dogsWrapper">
+        <Button onClick={() => toggleBreedAsc()}>
+                Breed {isBreedAsc ? '↑' : '↓' } {/* Use a star icon to represent favorite status */}
+        </Button>
+        <Button onClick={() => toggleLocAsc()}>
+                Location {isLocAsc ? '↑' : '↓'} {/* Use a star icon to represent favorite status */}
+        </Button> <br/>
         {currentDogs.map((dog) => (
           <div className="dogDiv">
             <img className="dogImg" src={dog.img}/>
@@ -81,16 +111,16 @@ const Dogs = (props) => {
             <p>Age: {dog.age}</p>
             <p>Location: {dog.zip_code}</p>
             <p>Breed: {dog.breed}</p>
-            <button onClick={() => toggleFavorite(dog.id)}>
+            <Button onClick={() => toggleFavorite(dog.id)}>
                 {favorites.some(favDog => favDog === dog.id) ? '★' : '☆'} {/* Use a star icon to represent favorite status */}
-            </button>
+            </Button>
           </div>
       ))}
         <div >
           {Array.from({ length: totalPages }, (_, i) => (
-            <button className="pagination" key={i + 1} onClick={() => handlePageChange(i + 1)}>
+            <Button className="pagination" key={i + 1} onClick={() => handlePageChange(i + 1)}>
               {i + 1}
-            </button>
+            </Button>
           ))}
         </div>
         <Button id="matchButton" onClick={findMatch}type="submit" variant="contained">

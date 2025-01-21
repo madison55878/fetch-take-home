@@ -39,18 +39,18 @@ const Login = () => {
       <img id="fetchLogo" src={logo} alt="Logo" />
       <form onSubmit={handleSubmit}>
         <FormControl sx={{ width: '35%'}}>
-          <TextField id="outlined-basic" label="Name"
+          <TextField sx={{ margin: '5px 0'}} id="outlined-basic" label="Name"
               type="name"
               value={name}
               onChange={(e) => setName(e.target.value)} variant="outlined" />
-          <TextField id="outlined-basic" label="Email"
+          <TextField sx={{ margin: '5px 0'}} id="outlined-basic" label="Email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} variant="outlined" />
+              onChange={(e) => setEmail(e.target.value)} variant="outlined" />    
           <Button type="submit" variant="contained">
             Login
-          </Button>         
-        </FormControl>
+          </Button>     
+        </FormControl>  
       </form>
       <p>{error}</p>
     </div>  
