@@ -15,8 +15,6 @@ const Dogs = (props) => {
   const [open, setOpen] = React.useState(false);
   const [match, setMatch] = React.useState({});
   const handleClose = () => setOpen(false);
-  const [isBreedAsc, setIsBreedAsc] = useState(false);
-  const [isLocAsc, setIsLocAsc] = useState(false);
 
   const modalStyle = {
     position: 'absolute',
@@ -40,28 +38,6 @@ const Dogs = (props) => {
     } else {
       setFavorites(favorites.filter(favDog => favDog !== dog));
     }
-  };
-
-  const toggleBreedAsc = () => {
-    if(!isBreedAsc) {
-      currentDogs.sort((a, b) => a.breed - b.breed)
-      setIsBreedAsc(true)
-    } else {
-      currentDogs.sort((a, b) => b.breed - a.breed)
-      setIsBreedAsc(false)
-    }
-    ;
-  };
-
-  const toggleLocAsc = () => {
-    if(!isLocAsc) {
-      currentDogs.sort((a, b) => a.breed - b.breed)
-      setIsLocAsc(true)
-    } else {
-      currentDogs.sort((a, b) => b.breed - a.breed)
-      setIsLocAsc(false)
-    }
-    ;
   };
 
   const findMatch = async () => {
@@ -98,12 +74,6 @@ const Dogs = (props) => {
 
     return (
       <div id="dogsWrapper">
-        <Button onClick={() => toggleBreedAsc()}>
-                Breed {isBreedAsc ? '↑' : '↓' } {/* Use a star icon to represent favorite status */}
-        </Button>
-        <Button onClick={() => toggleLocAsc()}>
-                Location {isLocAsc ? '↑' : '↓'} {/* Use a star icon to represent favorite status */}
-        </Button> <br/>
         {currentDogs.map((dog) => (
           <div className="dogDiv">
             <img className="dogImg" src={dog.img}/>

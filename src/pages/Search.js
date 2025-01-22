@@ -14,13 +14,17 @@ import logo from '../assets/fetch-logo.gif'
 const Search = () => {
   const [data, setData] = useState([]);
   const [dogs, setDogs] = useState([]);
+  const [isBreedAsc, setIsBreedAsc] = useState(true);
+  const [isAgeAsc, setIsAgeAsc] = useState(true);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     breeds: [],
     zipCodes: [],
     ageMin: 0,
     ageMax: 22, 
-    size: 25
+    size: 25,
+    sort: 'breed:asc'
   });
 
   useEffect(() => {
@@ -47,7 +51,6 @@ const Search = () => {
       ...formData,
       [event.target.name]: event.target.value,
     });
-    console.log(formData)
   }
 
   const handleSubmit = async (event) => {
@@ -56,10 +59,11 @@ const Search = () => {
       alert('You cannot choose a max age lower than a min age.')
     } 
     else {
-      const params = new URLSearchParams(formData).toString();
-      console.log(params)
+      const params = new URLSearchParams({ageMin: formData.ageMin, ageMax: formData.ageMax, size: formData.size, sort: formData.sort});
+      formData.breeds.forEach(breed => params.append('breeds[]', breed));
+      formData.zipCodes.forEach(zipCode => params.append('zipCodes[]', zipCode));
       try {
-        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${params}`, {
+        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${params.toString()}`, {
             credentials: 'include'
         });
         if (!response.ok) {
@@ -116,6 +120,28 @@ const Search = () => {
         console.log(error)
       }
   }
+
+  const toggleBreedAsc = () => {
+    if(!isBreedAsc) {
+      dogs.sort((a, b) => a.breed.localeCompare(b.breed));
+      setIsBreedAsc(true)
+    } else {
+      dogs.sort((a, b) => b.breed.localeCompare(a.breed));
+      setIsBreedAsc(false)
+    }
+    ;
+  };
+
+  const toggleAgeAsc = () => {
+    if(!isAgeAsc) {
+      dogs.sort((a, b) => a.age - b.age); 
+      setIsAgeAsc(true)
+    } else {
+      dogs.sort((a, b) => b.age - a.age); 
+      setIsAgeAsc(false)
+    }
+    ;
+  };
 
   return (
     <><a id="logoutLink" onClick={handleLogout}>LOGOUT</a>
@@ -206,14 +232,14 @@ const Search = () => {
               label="Results to Display"
               onChange={handleChange}
             >
-              <MenuItem key="25" value="25">
+              <MenuItem key="25" value={25}>
                 25
               </MenuItem>
-              <MenuItem key="50" value="50">
+              <MenuItem key="50" value={50}>
                 50
               </MenuItem>
-              <MenuItem key="75" value="75">
-                75
+              <MenuItem key="100" value={100}>
+                100
               </MenuItem>
             </Select>
           </FormControl>
@@ -222,8 +248,16 @@ const Search = () => {
           </Button>
         </FormControl>
       </form>
-      {dogs.length > 1 ? (
-        <Dogs dogs={dogs} />
+      {dogs.length > 0 ? (
+        <div> 
+          <Button onClick={() => toggleBreedAsc()}>
+            Breed {isBreedAsc ? '↑' : '↓' } {/* Use a star icon to represent favorite status */}
+          </Button>
+          <Button onClick={() => toggleAgeAsc()}>
+            Age {isAgeAsc ? '↑' : '↓' } {/* Use a star icon to represent favorite status */}
+          </Button>
+          <Dogs dogs={dogs} />
+        </div>
       ) : (
         <></>
       )}
